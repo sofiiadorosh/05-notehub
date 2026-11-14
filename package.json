@@ -21,6 +21,7 @@
     "*.{js,json,html,css,md}": "prettier --check"
   },
   "dependencies": {
+    "axios": "^1.21.1",
     "modern-normalize": "^3.0.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
