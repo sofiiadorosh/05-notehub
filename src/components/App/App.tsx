@@ -3,6 +3,7 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { fetchNotes } from '../../services/noteService';
 import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
+import Pagination from '../Pagination/Pagination';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -18,7 +19,13 @@ function App() {
     <div className={css.app}>
       <header className={css.toolbar}>
         {/* Компонент SearchBox */}
-        {/* Пагінація */}
+        {isSuccess && data.totalPages > 1 && (
+          <Pagination
+            pages={data.totalPages}
+            selectedPage={selectedPage}
+            onPageChange={setSelectedPage}
+          />
+        )}
         {/* Кнопка створення нотатки */}
       </header>
       {isSuccess && data.notes.length > 0 && <NoteList notes={data.notes} />}
