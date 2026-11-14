@@ -5,12 +5,14 @@ import {
   useQueryClient,
   keepPreviousData,
 } from '@tanstack/react-query';
+import { useDebouncedCallback } from 'use-debounce';
 import { createNote, deleteNote, fetchNotes } from '../../services/noteService';
 import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
+import SearchBox from '../SearchBox/SearchBox';
 
 function App() {
   const queryClient = useQueryClient();
@@ -50,10 +52,15 @@ function App() {
     setModalOpened(false);
   };
 
+  const handleSearchNotes = useDebouncedCallback((query: string) => {
+    setQuery(query);
+    setSelectedPage(1);
+  }, 300);
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        {/* Компонент SearchBox */}
+        <SearchBox onChange={handleSearchNotes} />
         {isSuccess && data.totalPages > 1 && (
           <Pagination
             pages={data.totalPages}
