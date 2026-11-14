@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Note } from '../types/note';
+import type { Note, NoteFormValues } from '../types/note';
 
 interface FetchNotesResponse {
   notes: Note[];
@@ -23,9 +23,7 @@ export async function fetchNotes(
   return data;
 }
 
-export async function createNote(
-  note: Pick<Note, 'title' | 'content' | 'tag'>,
-): Promise<Note> {
+export async function createNote(note: NoteFormValues): Promise<Note> {
   const { data } = await NOTEHUB.post<Note>('/notes', note);
   return data;
 }
