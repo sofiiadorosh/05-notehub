@@ -1,11 +1,13 @@
 import { useId } from 'react';
-import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { NOTE_TAGS, type NoteFormValues } from '../../types/note';
 import css from './NoteForm.module.css';
 
 interface NoteFormProps {
   onCancel: () => void;
+  onSubmit: (note: NoteFormValues) => void;
+  isSubmitting: boolean;
 }
 
 const initialValues: NoteFormValues = {
@@ -25,22 +27,14 @@ const NoteFormSchema = Yup.object().shape({
     .required('Tag is required'),
 });
 
-function NoteForm({ onCancel }: NoteFormProps) {
+function NoteForm({ onCancel, onSubmit, isSubmitting }: NoteFormProps) {
   const fieldId = useId();
-
-  const handleSubmit = (
-    values: NoteFormValues,
-    actions: FormikHelpers<NoteFormValues>,
-  ) => {
-    console.log('Note form:', values);
-    actions.resetForm();
-  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={NoteFormSchema}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
     >
       <Form className={css.form}>
         <div className={css.formGroup}>
@@ -87,7 +81,11 @@ function NoteForm({ onCancel }: NoteFormProps) {
           <button type="button" className={css.cancelButton} onClick={onCancel}>
             Cancel
           </button>
-          <button type="submit" className={css.submitButton} disabled={false}>
+          <button
+            type="submit"
+            className={css.submitButton}
+            disabled={isSubmitting}
+          >
             Create note
           </button>
         </div>
