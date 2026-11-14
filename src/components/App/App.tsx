@@ -5,7 +5,7 @@ import {
   useQueryClient,
   keepPreviousData,
 } from '@tanstack/react-query';
-import { createNote, fetchNotes } from '../../services/noteService';
+import { createNote, deleteNote, fetchNotes } from '../../services/noteService';
 import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
@@ -24,11 +24,21 @@ function App() {
     placeholderData: keepPreviousData,
   });
 
-  const { mutate, isPending } = useMutation({
+  const createNoteMutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       handleModalClose();
+    },
+  });
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: deleteNote,
+    onSuccess: () => {
+      if (data?.notes.length === 1 && selectedPage > 1) {
+        setSelectedPage(selectedPage - 1);
+      }
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
   });
 
@@ -55,13 +65,19 @@ function App() {
           Create note +
         </button>
       </header>
-      {isSuccess && data.notes.length > 0 && <NoteList notes={data.notes} />}
+      {isSuccess && data.notes.length > 0 && (
+        <NoteList
+          notes={data.notes}
+          onDelete={deleteNoteMutation.mutate}
+          isDeleting={deleteNoteMutation.isPending}
+        />
+      )}
       {isModalOpened && (
         <Modal onClose={handleModalClose}>
           <NoteForm
             onCancel={handleModalClose}
-            onSubmit={mutate}
-            isSubmitting={isPending}
+            onSubmit={createNoteMutation.mutate}
+            isSubmitting={createNoteMutation.isPending}
           />
         </Modal>
       )}
