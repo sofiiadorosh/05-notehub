@@ -1,5 +1,10 @@
 import axios from 'axios';
-import type { Note, NoteFormValues } from '../types/note';
+import type { Note, NewNote } from '../types/note';
+
+interface FetchNotesParams {
+  search: string;
+  page: number;
+}
 
 interface FetchNotesResponse {
   notes: Note[];
@@ -13,17 +18,17 @@ const NOTEHUB = axios.create({
   },
 });
 
-export async function fetchNotes(
-  query: string,
-  page: number,
-): Promise<FetchNotesResponse> {
+export async function fetchNotes({
+  search,
+  page,
+}: FetchNotesParams): Promise<FetchNotesResponse> {
   const { data } = await NOTEHUB.get<FetchNotesResponse>('/notes', {
-    params: { search: query, page, perPage: 12 },
+    params: { search, page, perPage: 12 },
   });
   return data;
 }
 
-export async function createNote(note: NoteFormValues): Promise<Note> {
+export async function createNote(note: NewNote): Promise<Note> {
   const { data } = await NOTEHUB.post<Note>('/notes', note);
   return data;
 }

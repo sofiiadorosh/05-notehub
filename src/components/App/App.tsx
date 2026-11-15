@@ -13,6 +13,9 @@ import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
 import SearchBox from '../SearchBox/SearchBox';
+import Loader from '../Loader/Loader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import EmptyMessage from '../EmptyMessage/EmptyMessage';
 
 function App() {
   const queryClient = useQueryClient();
@@ -20,9 +23,9 @@ function App() {
   const [selectedPage, setSelectedPage] = useState(1);
   const [isModalOpened, setModalOpened] = useState(false);
 
-  const { data, isSuccess } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['notes', query, selectedPage],
-    queryFn: () => fetchNotes(query, selectedPage),
+    queryFn: () => fetchNotes({ search: query, page: selectedPage }),
     placeholderData: keepPreviousData,
   });
 
@@ -72,6 +75,7 @@ function App() {
           Create note +
         </button>
       </header>
+      {isLoading && <Loader />}
       {isSuccess && data.notes.length > 0 && (
         <NoteList
           notes={data.notes}
@@ -79,6 +83,8 @@ function App() {
           isDeleting={deleteNoteMutation.isPending}
         />
       )}
+      {isSuccess && data.notes.length === 0 && <EmptyMessage query={query} />}
+      {isError && <ErrorMessage />}
       {isModalOpened && (
         <Modal onClose={handleModalClose}>
           <NoteForm

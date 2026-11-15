@@ -1,16 +1,16 @@
 import { useId } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { NOTE_TAGS, type NoteFormValues } from '../../types/note';
+import { NOTE_TAGS, type NewNote } from '../../types/note';
 import css from './NoteForm.module.css';
 
 interface NoteFormProps {
   onCancel: () => void;
-  onSubmit: (note: NoteFormValues) => void;
+  onSubmit: (note: NewNote) => void;
   isSubmitting: boolean;
 }
 
-const initialValues: NoteFormValues = {
+const initialValues: NewNote = {
   title: '',
   content: '',
   tag: 'Todo',

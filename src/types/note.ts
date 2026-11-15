@@ -16,4 +16,4 @@ export interface Note {
   updatedAt: string;
 }
 
-export type NoteFormValues = Pick<Note, 'title' | 'content' | 'tag'>;
+export type NewNote = Pick<Note, 'title' | 'content' | 'tag'>;
