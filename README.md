@@ -6,7 +6,7 @@ delete the ones you no longer need. Notes are stored on the
 [NoteHub API](https://notehub-public.goit.study/api/docs), and server data is
 fetched and cached with [TanStack Query](https://tanstack.com/query/latest).
 
-**Live demo:** _coming soon_
+**Live demo:** https://05-notehub-khaki-iota.vercel.app/
 
 ## Features
 
