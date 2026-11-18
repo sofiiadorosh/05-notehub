@@ -7,15 +7,15 @@ import {
 } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 import { createNote, deleteNote, fetchNotes } from '../../services/noteService';
-import css from './App.module.css';
-import NoteList from '../NoteList/NoteList';
+import SearchBox from '../SearchBox/SearchBox';
 import Pagination from '../Pagination/Pagination';
+import NoteList from '../NoteList/NoteList';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
-import SearchBox from '../SearchBox/SearchBox';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import EmptyMessage from '../EmptyMessage/EmptyMessage';
+import css from './App.module.css';
 
 function App() {
   const queryClient = useQueryClient();
